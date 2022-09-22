@@ -12,3 +12,9 @@ Se debe llevar cuenta de los mensajes leidos (que liberan memoria) y
 mensajes dejados (que consumen memoria)
 
 Para acceder a memora compartida se deben utilizar semaforos.
+
+## Para compilar
+
+get.c y set.c se compilan con -lrt
+
+gcc -o set set.c -lrt
