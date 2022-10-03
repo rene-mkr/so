@@ -1,4 +1,3 @@
-#include <ctype.h>
 #include "structures.h"
 #include "styles.h"
 #include "validator.h"
@@ -6,7 +5,8 @@
 int main(int argc, char *argv[]) {
     int buffer_size = atoi(argv[1]);
     char input;
-    size_t location = 0; // Menu page is 0 and messenger is 1.
+    uint8_t location = 0; // Menu page is 0 and messenger is 1.
+    int current_conv = 0;
     message_board msg_controller; // Init message_board object (struct).
     msg_controller.total_convs = 0;
     msg_controller.open_convs = 0;
@@ -19,14 +19,7 @@ int main(int argc, char *argv[]) {
 
     while (1) {
         if (location == 0) {
-            printf("\nWhat do you want to do:\n\n\
-            [S]tart conv\n\
-            [C]hange conv\n\
-            [P]rint convs\n\
-            [M]essage\n\
-            [E]xit\n\n\tInput: ");
-            scanf(" %c", &input);
-            input = toupper(input); // Save input as upper case value.
+            input = print_menu();
 
             // Control user option menu with switch statement.
             switch (input) {
@@ -40,8 +33,13 @@ int main(int argc, char *argv[]) {
                 case 'P':
                     print_convs(msg_controller);
                     break;
+                case 'G':
+                    print_id_data(msg_controller, current_conv);
+                    break;
                 case 'C':
-                    printf("\n\tMissing [C] implementation.\n\n");
+                    print_convs(msg_controller);
+                    current_conv = change_conv();
+                    print_id_data(msg_controller, current_conv);
                     break;
                 case 'M':
                     printf("\n\tMissing [M] implementation.\n\n");

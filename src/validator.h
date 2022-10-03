@@ -17,4 +17,12 @@ void validate_new_conv(message_board *msg_controller);
  *
  */
 
+ int change_conv();
+/**
+ * Function to change conversation between users.
+ * 
+ * @return Conversation number of conversation we're changing to.
+ *
+ */
+ 
 #endif

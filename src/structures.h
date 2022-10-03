@@ -14,6 +14,7 @@ typedef struct message_board {
     int total_convs;
     int total_mem_reads, total_mem_writes;
     char conv_names[3][12]; // Three conv_names of 12 chars at most.
+    char storage_ids[3][13]; // ID for each shared memory object (one per conv).
 } message_board;
 
 typedef struct conversation {
@@ -36,5 +37,7 @@ void print_convs(message_board board);
  * @param board Structure of the message_board we're using.
  *
  */
+
+void print_id_data(message_board board, uint8_t current_conv);
 
 #endif

@@ -12,16 +12,16 @@ BINS = $(deps:%.c=%.o)
 all: ${BINS} messenger.exe
 
 ${BINS}: ${deps}
-	@echo "\nGenerating binary objects"
+	@echo "\nGenerating binary objects."
 	${CC} -c $^
 
 messenger.exe: ${BINS}
-	@echo "\nGenerating executable"
+	@echo "\nGenerating executable."
 	${CC} $^ -o $@ ${LINKERS}
 	@echo "\n"
 
 clean:
-	@echo "\nRemoving all binary and executable files\n"
+	@echo "\nRemoving all binary and executable files...\n"
 	@rm -rvf *.o
 	@rm -rvf *.exe
 	@echo "\n"
