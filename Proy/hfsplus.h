@@ -7,6 +7,14 @@ typedef WORD UInt16;
 typedef DWORD UInt32;
 typedef LONGLONG UInt64;
 
+#define BIG_ENDIAN_SHORT(n) ((unsigned short) (((n & 0xFF) << 8) | \
+                                            ((n & 0xFF00) >> 8)))
+#define BIG_ENDIAN_LONG(n) ((unsigned long) (((n & 0xFF) << 24) | \
+                                          ((n & 0xFF00) << 8) | \
+                                          ((n & 0xFF0000) >> 8) | \
+                                          ((n & 0xFF000000) >> 24)))
+
+
 typedef UInt32 HFSCatalogNodeID;
 
 struct HFSPlusExtentDescriptor {
