@@ -9,6 +9,8 @@
 #define BIG_ENDIAN_LONGLONG(n) ((UInt64) (BIG_ENDIAN_LONG(n >> 32) | \
                                 ((UInt64) BIG_ENDIAN_LONG(n & 0xFFFFFFFF)) << 32))
 
+#pragma pack(push,1)
+
 typedef UInt16 UniChar;
 struct HFSUniStr255 {
     UInt16  length;
@@ -315,3 +317,7 @@ enum {
     kSymLinkFileType  = 0x736C6E6B, /* 'slnk' */
     kSymLinkCreator   = 0x72686170  /* 'rhap' */
 };
+
+#pragma pack(pop)
+
+

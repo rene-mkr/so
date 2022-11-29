@@ -1,3 +1,4 @@
+
 typedef unsigned char BYTE;
 typedef unsigned short int WORD;
 typedef unsigned int DWORD;
@@ -5,8 +6,8 @@ typedef unsigned long long LONGLONG;
 
 typedef BYTE UInt8;
 typedef char SInt8;
-typedef int SInt16;
-typedef long int SInt32;
+typedef short int SInt16;
+typedef int SInt32;
 typedef WORD UInt16;
 typedef DWORD UInt32;
 typedef LONGLONG UInt64;
