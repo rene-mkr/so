@@ -8,7 +8,6 @@
 #include <math.h>
 
 void bubble_sort(int *array, int array_size);
-void merge_sort(int *array, float array_size);
 void merge_arrays(int *A,int *L,int leftCount,int *R,int rightCount);
 
 /**
@@ -39,48 +38,6 @@ void bubble_sort(int *array, int array_size) {
     } while (sortFlag < array_size);
     // printf("\n");
 }
-
-/**
- * Function that does a merge sort.
- * changed by me (Rene)
- * https://stackoverflow.com/questions/2571049/how-to-sort-in-place-using-the-merge-sort-algorithm
- */
-void intercala(int* xs, int ini, int m, int fin) {
-
-    int n = fin - ini;
-    int temp[n];
-    int i=ini;
-    int j=m;
-    int k=0;
-
-    while (i < m && j < fin) {
-        if (xs[i] <= xs[j]) {
-            temp[k]=xs[i];
-            k++;
-            i++;
-        }
-        else {
-            temp[k]=xs[j];
-            k++;
-            j++;
-        }
-    }
-    // It finished on one side, make sure both are finished
-    while (i < m) {
-            temp[k]=xs[i];
-            k++;
-            i++;
-    }
-    while (j < fin) {
-            temp[k]=xs[j];
-            k++;
-            j++;
-    }
-    // Copy temp back to the original
-    for (i=ini;i<fin;i++)
-        xs[i]=temp[i];
-}  
-
 
 /**
  * Function to merge left and right array into the original array. 
