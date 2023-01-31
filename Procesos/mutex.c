@@ -37,13 +37,6 @@ int main(int argc, char *argv[]) {
     return -1;
   }
 
-  // Inicia semaforo
-  if (sem_init(&sem, 0, 1) == -1) {
-    fprintf(stderr, "sem_init\n");
-    return -1;
-  }
-
-
   /* El parametro que recibo es el valor inicial de dato */
   dato = atoi(argv[1]);
 	
