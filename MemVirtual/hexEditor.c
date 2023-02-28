@@ -81,6 +81,9 @@ int leeChar() {
 
 
 int edita(char *filename) {
+	
+    /* Limpia pantalla */
+    clear();
 
     /* Lee archivo */
     char *map = mapFile(filename);
@@ -95,7 +98,15 @@ int edita(char *filename) {
     }
     refresh();
 
-    leeChar();
+    int c = getch();
+	
+    while (c != 26) {
+	    switch (c) {
+		    case KEY_LEFT:
+			    break;
+	    }
+	    c = getch();
+    }
 
     if (munmap(map, fd) == -1) {
       perror("Error al desmapear");
@@ -108,7 +119,10 @@ int edita(char *filename) {
 
 int main(int argc, char const *argv[])
 {
-	initscr();			
+	initscr();
+	raw(); 
+	keypad(stdscr, TRUE);	/* Para obtener F1,F2,.. */
+	noecho();
 
     /* El archivo se da como parametro */
     if (argc != 2) {
