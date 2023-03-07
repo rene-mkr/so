@@ -13,8 +13,11 @@ Disco NTFS
 
 https://github.com/rene-mkr/curso-SO/blob/master/im_ntfs.zip
 
+Discos Macs
 
 ## Información 
+
+https://www.partitionwizard.com/help/what-is-disk-partitioning.html
 
 http://web.archive.org/web/20200221205058/http://www.cse.scu.edu/~tschwarz/coen252_04/Lectures/MBR-Example.html
 
