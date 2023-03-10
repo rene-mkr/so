@@ -13,7 +13,10 @@ Disco NTFS
 
 https://github.com/rene-mkr/curso-SO/blob/master/im_ntfs.zip
 
-Discos Macs
+Disco Desconocido (el de Proyecto Final)
+
+https://ml.izt.uam.mx/~rene/quantum.zip
+
 
 ## Información 
 
