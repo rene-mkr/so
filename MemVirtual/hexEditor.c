@@ -49,7 +49,7 @@ char *mapFile(char *filePath) {
     /* Mapea archivo */
     struct stat st;
     fstat(fd,&st);
-    int fs = st.st_size;
+    long fs = st.st_size;
 
     char *map = mmap(0, fs, PROT_READ, MAP_SHARED, fd, 0);
     if (map == MAP_FAILED) {
