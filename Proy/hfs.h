@@ -9,6 +9,13 @@
 #define BIG_ENDIAN_LONGLONG(n) ((UInt64) (BIG_ENDIAN_LONG(n >> 32) | \
                                 ((UInt64) BIG_ENDIAN_LONG(n & 0xFFFFFFFF)) << 32))
 
+enum {
+    kHFSFolderRecord        = 0x0001,
+    kHFSFileRecord          = 0x0002,
+    kHFSFolderThreadRecord  = 0x0003,
+    kHFSFileThreadRecord    = 0x0004
+};
+
 #pragma pack(push,1)
 
 struct hfs_extent {
@@ -86,6 +93,16 @@ struct BTHeaderRec {
     UInt32    reserved3[16];
 };
 typedef struct BTHeaderRec BTHeaderRec;
+
+typedef UInt32 HFSCatalogNodeID;
+
+struct HFSCatalogKey {
+    UInt8           	keyLength;
+	UInt8				resrv1;
+    HFSCatalogNodeID    parentID;
+    char		        nodeName[31];
+};
+typedef struct HFSCatalogKey HFSCatalogKey;
 
 #pragma pack(pop)
 
