@@ -94,7 +94,8 @@ int edita(char *filename) {
     for(int i= 0; i<25; i++) {
     	// Haz linea, base y offset
     	char *l = hazLinea(map,i*16);
-	    mvprintw(i,0,l);
+	    move(i,0);
+	    addstr(l);
     }
     refresh();
 
