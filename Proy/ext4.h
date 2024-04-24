@@ -307,3 +307,16 @@ struct ext4_dir_entry_2 {
 	__u8	file_type;		/* See file type macros EXT4_FT_* below */
 	char	name[EXT4_NAME_LEN];	/* File name */
 };
+
+/*
+ * Ext4 directory file types.  Only the low 3 bits are used.  The
+ * other bits are reserved for now.
+ */
+#define EXT4_FT_UNKNOWN		0
+#define EXT4_FT_REG_FILE	1
+#define EXT4_FT_DIR		2
+#define EXT4_FT_CHRDEV		3
+#define EXT4_FT_BLKDEV		4
+#define EXT4_FT_FIFO		5
+#define EXT4_FT_SOCK		6
+#define EXT4_FT_SYMLINK		7
