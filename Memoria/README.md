@@ -15,6 +15,6 @@ Para acceder a memora compartida se deben utilizar semaforos.
 
 ## Para compilar
 
-get.c y set.c se compilan con -lrt
+get.c y set.c
 
-gcc -o set set.c -lrt
+gcc -o set set.c
