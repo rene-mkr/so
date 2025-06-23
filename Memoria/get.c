@@ -6,7 +6,7 @@
 #include <string.h>
 
 #define STORAGE_ID "/OBJ_MEM_COM"
-#define STORAGE_SIZE 32
+#define STORAGE_SIZE 128
 
 int main(int argc, char *argv[])
 {
