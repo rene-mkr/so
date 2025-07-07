@@ -101,7 +101,7 @@ int edita(char *filename) {
 
     int c = getch();
 	
-    while (c != 26) {
+    while (c != 24) { // Termina con CTRL-X
 	    switch (c) {
 		    case KEY_LEFT:
 			    break;
