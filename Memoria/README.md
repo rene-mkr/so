@@ -9,9 +9,9 @@ El programa debe preguntar si se va a leer o escribir un mensaje
 (o se pueden tener un programa para cada cosa)
 
 Se debe llevar cuenta de los mensajes leidos (que liberan memoria) y
-mensajes dejados (que consumen memoria)
+mensajes guardados (que consumen memoria)
 
-Para acceder a memora compartida se deben utilizar semaforos.
+Para acceder a memora compartida se deben utilizar cerraduras de archivos.
 
 ## Para compilar
 
