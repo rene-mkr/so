@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 		return 10;
 	}
 
-    // Ponle cerradura sin espera
+    // Ponle cerradura
 	//	LOCK_EX | LOCK_NB para no bloquear
     // int lock = flock(fd,LOCK_EX);
  
