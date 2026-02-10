@@ -1,5 +1,6 @@
 
 #include <stdio.h>
+#include <sys/file.h>
 #include <sys/mman.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -26,6 +27,11 @@ int main(int argc, char *argv[])
 		return 10;
 	}
 
+    // Ponle cerradura sin espera
+	//	LOCK_EX | LOCK_NB para no bloquear
+    // int lock = flock(fd,LOCK_EX);
+ 
+	
 	// mapea a la memoria del proceso
 	addr = mmap(NULL, STORAGE_SIZE, PROT_READ, MAP_SHARED, fd, 0);
 	if (addr == MAP_FAILED)
