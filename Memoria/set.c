@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <sys/file.h>
 #include <sys/mman.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -28,6 +29,11 @@ int main(int argc, char *argv[])
 		return 10;
 	}
 
+	// Ponle cerradura 
+	//	LOCK_EX | LOCK_NB para no bloquear
+    // int lock = flock(fd,LOCK_EX);
+ 
+	
 	// aumenta el objeto de memoria compartida ya
 	// que es de 0 por omision
 	res = ftruncate(fd, STORAGE_SIZE);
