@@ -80,7 +80,7 @@ int leeChar() {
 }
 
 
-int edita(char *filename) {
+int visor(char *filename) {
 	
     /* Limpia pantalla */
     clear();
@@ -131,7 +131,7 @@ int main(int argc, char const *argv[])
         return(-1);
     }
 
-    edita((char *)argv[1]);
+    visor((char *)argv[1]);
 
     endwin();
     
