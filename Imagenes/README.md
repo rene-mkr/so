@@ -9,10 +9,6 @@ Disco FAT y NTFS
 
 https://github.com/rene-mkr/curso-SO/blob/master/allinone.img
 
-Disco NTFS
-
-https://github.com/rene-mkr/curso-SO/blob/master/im_ntfs.zip
-
 Disco Desconocido
 
 https://ml.izt.uam.mx/~rene/quantum.zip
