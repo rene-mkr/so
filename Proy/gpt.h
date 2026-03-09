@@ -4,9 +4,13 @@
 
 #pragma pack(push,1)
 
-
-struct _gpt_guid {
-    uint8_t data[16];
+struct gpt_guid
+{
+	uint64_t u1;
+	uint16_t u2;
+	uint16_t u3;
+	uint16_t u4;
+	uint64_t u5;
 };
 
 struct gpt_header {
@@ -19,7 +23,7 @@ struct gpt_header {
 	uint64_t            alternative_lba; /* backup GPT header */
 	uint64_t            first_usable_lba; /* first usable logical block for partitions */
 	uint64_t            last_usable_lba; /* last usable logical block for partitions */
-	uint8_t				disk_guid[16]; /* unique disk identifier */
+	struct gpt_guid 	disk_guid; /* unique disk identifier */
 	uint64_t            partition_entry_lba; /* LBA of start of partition entries array */
 	uint32_t            npartition_entries; /* total partition entries - normally 128 */
 	uint32_t            sizeof_partition_entry; /* bytes for each GUID pt */
@@ -30,15 +34,15 @@ struct gpt_header {
 ///
 /// GPT Partition Entry.
 ///
-struct gpt_partentry
+typedef struct
 {
-  uint8_t	type[16];
-  uint8_t	guid[16];
-  uint64_t 	start;
-  uint64_t 	end;
-  uint64_t 	attrib;
-  char 		name[72];
-};
+	struct gpt_guid PartitionTypeGUID;
+	struct gpt_guid UniquePartitionGUID;
+  	uint64_t 	    start;
+  	uint64_t 	    end;
+  	uint64_t 	    attrib;
+	uint16_t        PartitionName[36]; // Nombre en UTF16
+} efi_partition_entry;
 
 
 #pragma pack(pop)
