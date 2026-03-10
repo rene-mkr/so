@@ -6,11 +6,7 @@
 
 struct gpt_guid
 {
-	uint64_t u1;
-	uint16_t u2;
-	uint16_t u3;
-	uint16_t u4;
-	uint64_t u5;
+	uint8_t uuid;
 };
 
 struct gpt_header {
