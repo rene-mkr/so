@@ -6,7 +6,7 @@
 
 struct gpt_guid
 {
-	uint8_t uuid;
+	uint8_t uuid[16];
 };
 
 struct gpt_header {
