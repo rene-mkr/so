@@ -1,23 +1,5 @@
 #include <curses.h>
 
-int leeChar() {
-  int chars[5];
-  int ch,i=0;
-  nodelay(stdscr, TRUE);
-  while((ch = getch()) == ERR); /* Espera activa */
-  ungetch(ch);
-  while((ch = getch()) != ERR) {
-    chars[i++]=ch;
-  }
-  /* convierte a numero con todo lo leido */
-  int res=0;
-  for(int j=0;j<i;j++) {
-    res <<=8;
-    res |= chars[j];
-  }
-  return res;
-}
-
 int main()
 {
    char *lista[] = {"Uno", "Dos", "Tres", "Cuatro" };
@@ -37,7 +19,7 @@ int main()
       }
       move(5+i,5);
       refresh();
-      c = leeChar();
+      c = getch();
       switch(c) {
          case 0x1B5B41:
             i = (i>0) ? i - 1 : 3;
