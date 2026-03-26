@@ -1,5 +1,9 @@
 #include <stdint.h>
 
+#ifndef APFSH
+
+#define APFSH
+
 // Tipos de Apple
 // https://developer.apple.com/support/downloads/Apple-File-System-Reference.pdf
 
@@ -170,4 +174,194 @@ struct checkpoint_map_phys
 };
 typedef struct checkpoint_map_phys checkpoint_map_phys_t;
 
+// Object Map
+
+struct omap_phys
+{
+    obj_phys_t om_o;
+    uint32_t om_flags;
+    uint32_t om_snap_count;
+    uint32_t om_tree_type;
+    uint32_t om_snapshot_tree_type;
+    oid_t om_tree_oid;
+    oid_t om_snapshot_tree_oid;
+    xid_t om_most_recent_snap;
+    xid_t om_pending_revert_min;
+    xid_t om_pending_revert_max;
+};
+typedef struct omap_phys omap_phys_t;
+
+struct omap_key
+{
+    oid_t ok_oid;
+    xid_t ok_xid;
+};
+typedef struct omap_key omap_key_t;
+
+struct omap_val
+{
+    uint32_t ov_flags;
+    uint32_t ov_size;
+    paddr_t ov_paddr;
+};
+typedef struct omap_val omap_val_t;
+
+// BTree
+// Tipos de Nodos
+#define BTNODE_ROOT 0x0001
+#define BTNODE_LEAF 0x0002
+#define BTNODE_FIXED_KV_SIZE 0x0004
+#define BTNODE_HASHED 0x0008
+#define BTNODE_NOHEADER 0x0010
+#define BTNODE_CHECK_KOFF_INVAL 0x8000
+
+// Localidad en el BTree
+struct nloc
+{
+    uint16_t off;
+    uint16_t len;
+};
+typedef struct nloc nloc_t;
+
+// Nodo de un BTree
+struct btree_node_phys
+{
+    obj_phys_t btn_o;
+    uint16_t btn_flags;
+    uint16_t btn_level;
+    uint32_t btn_nkeys;
+    nloc_t btn_table_space;
+    nloc_t btn_free_space;
+    nloc_t btn_key_free_list;
+    nloc_t btn_val_free_list;
+    uint64_t btn_data[];
+};
+typedef struct btree_node_phys btree_node_phys_t;
+
+// Info del BTree
+struct btree_info_fixed
+{
+    uint32_t bt_flags;
+    uint32_t bt_node_size;
+    uint32_t bt_key_size;
+    uint32_t bt_val_size;
+};
+typedef struct btree_info_fixed btree_info_fixed_t;
+
+struct btree_info
+{
+    btree_info_fixed_t bt_fixed;
+    uint32_t bt_longest_key;
+    uint32_t bt_longest_val;
+    uint64_t bt_key_count;
+    uint64_t bt_node_count;
+};
+typedef struct btree_info btree_info_t;
+
+// Lugar de una llave y un valor
+struct kvloc
+{
+    nloc_t k;
+    nloc_t v;
+};
+typedef struct kvloc kvloc_t;
+
+// Offset de una llave y un valor
+struct kvoff
+{
+    uint16_t k;
+    uint16_t v;
+};
+typedef struct kvoff kvoff_t;
+
 // Volumenes
+
+#define APFS_MAGIC 'BSPA'
+#define APFS_MAX_HIST 8
+#define APFS_VOLNAME_LEN 256
+
+// Definiciones necesarias para eñ superbloque
+// Quien modifico el volumen
+#define APFS_MODIFIED_NAMELEN 32
+
+struct apfs_modified_by
+{
+    uint8_t id[APFS_MODIFIED_NAMELEN];
+    uint64_t timestamp;
+    xid_t last_xid;
+};
+
+typedef struct apfs_modified_by apfs_modified_by_t;
+
+typedef uint32_t cp_key_class_t;
+typedef uint32_t cp_key_os_version_t;
+typedef uint16_t cp_key_revision_t;
+typedef uint32_t crypto_flags_t;
+
+// Información de la encriptacion del volumen
+struct wrapped_meta_crypto_state
+{
+    uint16_t major_version;
+    uint16_t minor_version;
+    crypto_flags_t cpflags;
+    cp_key_class_t persistent_class;
+    cp_key_os_version_t key_os_version;
+    cp_key_revision_t key_revision;
+    uint16_t unused;
+} __attribute__((aligned(2), packed));
+typedef struct wrapped_meta_crypto_state wrapped_meta_crypto_state_t;
+
+struct apfs_superblock
+{
+    obj_phys_t apfs_o;
+    uint32_t apfs_magic;
+    uint32_t apfs_fs_index;
+    uint64_t apfs_features;
+    uint64_t apfs_readonly_compatible_features;
+    uint64_t apfs_incompatible_features;
+    uint64_t apfs_unmount_time;
+    uint64_t apfs_fs_reserve_block_count;
+    uint64_t apfs_fs_quota_block_count;
+    uint64_t apfs_fs_alloc_count;
+    wrapped_meta_crypto_state_t apfs_meta_crypto;
+    uint32_t apfs_root_tree_type;
+    uint32_t apfs_extentref_tree_type;
+    uint32_t apfs_snap_meta_tree_type;
+    oid_t apfs_omap_oid;
+    oid_t apfs_root_tree_oid;
+    oid_t apfs_extentref_tree_oid;
+    oid_t apfs_snap_meta_tree_oid;
+    xid_t apfs_revert_to_xid;
+    oid_t apfs_revert_to_sblock_oid;
+    uint64_t apfs_next_obj_id;
+    uint64_t apfs_num_files;
+    uint64_t apfs_num_directories;
+    uint64_t apfs_num_symlinks;
+    uint64_t apfs_num_other_fsobjects;
+    uint64_t apfs_num_snapshots;
+    uint64_t apfs_total_blocks_alloced;
+    uint64_t apfs_total_blocks_freed;
+    uuid_t apfs_vol_uuid;
+    uint64_t apfs_last_mod_time;
+    uint64_t apfs_fs_flags;
+    apfs_modified_by_t apfs_formatted_by;
+    apfs_modified_by_t apfs_modified_by[APFS_MAX_HIST];
+    uint8_t apfs_volname[APFS_VOLNAME_LEN];
+    uint32_t apfs_next_doc_id;
+    uint16_t apfs_role;
+    uint16_t reserved;
+    xid_t apfs_root_to_xid;
+    oid_t apfs_er_state_oid;
+    uint64_t apfs_cloneinfo_id_epoch;
+    uint64_t apfs_cloneinfo_xid;
+    oid_t apfs_snap_meta_ext_oid;
+    uuid_t apfs_volume_group_id;
+    oid_t apfs_integrity_meta_oid;
+    oid_t apfs_fext_tree_oid;
+    uint32_t apfs_fext_tree_type;
+    uint32_t reserved_type;
+    oid_t reserved_oid;
+};
+typedef struct apfs_superblock apfs_superblock_t;
+
+#endif
