@@ -364,4 +364,172 @@ struct apfs_superblock
 };
 typedef struct apfs_superblock apfs_superblock_t;
 
+// Sistema de archivos
+typedef enum
+{
+    APFS_TYPE_ANY = 0,
+    APFS_TYPE_SNAP_METADATA = 1,
+    APFS_TYPE_EXTENT = 2,
+    APFS_TYPE_INODE = 3,
+    APFS_TYPE_XATTR = 4,
+    APFS_TYPE_SIBLING_LINK = 5,
+    APFS_TYPE_DSTREAM_ID = 6,
+    APFS_TYPE_CRYPTO_STATE = 7,
+    APFS_TYPE_FILE_EXTENT = 8,
+    APFS_TYPE_DIR_REC = 9,
+    APFS_TYPE_DIR_STATS = 10,
+    APFS_TYPE_SNAP_NAME = 11,
+    APFS_TYPE_SIBLING_MAP = 12,
+    APFS_TYPE_FILE_INFO = 13,
+    APFS_TYPE_MAX_VALID = 13,
+    APFS_TYPE_MAX = 15,
+    APFS_TYPE_INVALID = 15,
+} j_obj_types;
+
+// Llave de un objeto del sistema de archivos
+
+struct j_key
+{
+    uint64_t obj_id_and_type;
+} __attribute__((packed));
+typedef struct j_key j_key_t;
+
+// Para manipular las llaves
+
+#define OBJ_ID_MASK 0x0fffffffffffffffULL
+#define OBJ_TYPE_MASK 0xf000000000000000ULL
+#define OBJ_TYPE_SHIFT 60
+#define SYSTEM_OBJ_ID_MARK 0x0fffffff00000000ULL
+
+// Para longitudes de nombre
+#define J_DREC_LEN_MASK 0x000003ff
+#define J_DREC_HASH_MASK 0xfffff400
+#define J_DREC_HASH_SHIFT 10
+
+// Llave y valor de un directorio
+struct j_drec_key
+{
+    j_key_t hdr;
+    uint16_t name_len;
+    uint8_t name[0];
+} __attribute__((packed));
+typedef struct j_drec_key j_drec_key_t;
+
+struct j_drec_hashed_key
+{
+    j_key_t hdr;
+    uint32_t name_len_and_hash;
+    uint8_t name[0];
+} __attribute__((packed));
+typedef struct j_drec_hashed_key j_drec_hashed_key_t;
+
+// Tipos de archivos para esta estructura (en flags)
+
+#define DT_UNKNOWN 0
+#define DT_FIFO 1
+#define DT_CHR 2
+#define DT_DIR 4
+#define DT_BLK 6
+#define DT_REG 8
+#define DT_LNK 10
+#define DT_SOCK 12
+#define DT_WHT 14
+
+struct j_drec_val
+{
+    uint64_t file_id;
+    uint64_t date_added;
+    uint16_t flags;
+    uint8_t xfields[];
+} __attribute__((packed));
+typedef struct j_drec_val j_drec_val_t;
+
+// Llave y valor de un inode
+
+// Tipos de Archivos, mismos que Linux
+// #define S_IFMT 0170000
+// #define S_IFIFO 0010000
+// #define S_IFCHR 0020000
+// #define S_IFDIR 0040000
+// #define S_IFBLK 0060000
+// #define S_IFREG 0100000
+// #define S_IFLNK 0120000
+// #define S_IFSOCK 0140000
+// #define S_IFWHT 0160000
+
+struct j_inode_key
+{
+    j_key_t hdr;
+} __attribute__((packed));
+typedef struct j_inode_key_t j_inode_key_t;
+
+typedef uint32_t uid_t;
+typedef uint32_t gid_t;
+
+typedef uint16_t ap_mode_t;
+
+struct j_inode_val
+{
+    uint64_t parent_id;
+    uint64_t private_id;
+    uint64_t create_time;
+    uint64_t mod_time;
+    uint64_t change_time;
+    uint64_t access_time;
+    uint64_t internal_flags;
+    union
+    {
+        int32_t nchildren;
+        int32_t nlink;
+    };
+    cp_key_class_t default_protection_class;
+    uint32_t write_generation_counter;
+    uint32_t bsd_flags;
+    uid_t owner;
+    gid_t group;
+    ap_mode_t mode;
+    uint16_t pad1;
+    uint64_t uncompressed_size;
+    uint8_t xfields[];
+} __attribute__((packed));
+typedef struct j_inode_val j_inode_val_t;
+
+struct j_xattr_key
+{
+    j_key_t hdr;
+    uint16_t name_len;
+    uint8_t name[0];
+} __attribute__((packed));
+typedef struct j_xattr_key j_xattr_key_t;
+
+struct j_xattr_val
+{
+    uint16_t flags;
+    uint16_t xdata_len;
+    uint8_t xdata[0];
+} __attribute__((packed));
+typedef struct j_xattr_val j_xattr_val_t;
+
+// File Extent
+
+struct j_file_extent_key
+{
+    j_key_t hdr;
+    uint64_t logical_addr;
+} __attribute__((packed));
+typedef struct j_file_extent_key j_file_extent_key_t;
+
+// Constantes para manipular la información
+#define J_FILE_EXTENT_LEN_MASK 0x00ffffffffffffffULL
+#define J_FILE_EXTENT_FLAG_MASK 0xff00000000000000ULL
+#define J_FILE_EXTENT_FLAG_SHIFT 56
+
+struct j_file_extent_val
+{
+    uint64_t len_and_flags;
+    uint64_t phys_block_num;
+    uint64_t crypto_id;
+} __attribute__((packed));
+typedef struct j_file_extent_val j_file_extent_val_t;
+
 #endif
