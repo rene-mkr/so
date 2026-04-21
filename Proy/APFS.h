@@ -406,6 +406,12 @@ typedef struct j_key j_key_t;
 #define J_DREC_HASH_MASK 0xfffff400
 #define J_DREC_HASH_SHIFT 10
 
+typedef enum
+{
+    MASKDREC_TYPE_ = 0x000f,
+    RESERVED_10 = 0x0010
+} dir_rec_flags;
+
 // Llave y valor de un directorio
 struct j_drec_key
 {
@@ -457,6 +463,27 @@ typedef struct j_drec_val j_drec_val_t;
 // #define S_IFSOCK 0140000
 // #define S_IFWHT 0160000
 
+// Tipos de archivos
+
+#define DT_UNKNOWN 0
+#define DT_FIFO 1
+#define DT_CHR 2
+#define DT_DIR 4
+#define DT_BLK 6
+#define DT_REG 8
+#define DT_LNK 10
+#define DT_SOCK 12
+#define DT_WHT 14
+
+#define INVALID_INO_NUM 0
+#define ROOT_DIR_PARENT 1
+#define ROOT_DIR_INO_NUM 2
+#define PRIV_DIR_INO_NUM 3
+#define SNAP_DIR_INO_NUM 6
+#define PURGEABLE_DIR_INO_NUM 7
+#define MIN_USER_INO_NUM 16
+#define UNIFIED_ID_SPACE_MARK 0x0800000000000000ULL
+
 struct j_inode_key
 {
     j_key_t hdr;
@@ -465,8 +492,55 @@ typedef struct j_inode_key_t j_inode_key_t;
 
 typedef uint32_t uid_t;
 typedef uint32_t gid_t;
-
+// typedef uint16_t mode_t; usamos el standard
 typedef uint16_t ap_mode_t;
+
+// Campos extendidos
+#define DREC_EXT_TYPE_SIBLING_ID 1
+#define INO_EXT_TYPE_SNAP_XID 1
+#define INO_EXT_TYPE_DELTA_TREE_OID 2
+#define INO_EXT_TYPE_DOCUMENT_ID 3
+#define INO_EXT_TYPE_NAME 4
+#define INO_EXT_TYPE_PREV_FSIZE 5
+#define INO_EXT_TYPE_RESERVED_6 6
+#define INO_EXT_TYPE_FINDER_INFO 7
+#define INO_EXT_TYPE_DSTREAM 8
+#define INO_EXT_TYPE_RESERVED_9 9
+#define INO_EXT_TYPE_DIR_STATS_KEY 10
+#define INO_EXT_TYPE_FS_UUID 11
+#define INO_EXT_TYPE_RESERVED_12 12
+#define INO_EXT_TYPE_SPARSE_BYTES 13
+#define INO_EXT_TYPE_RDEV 14
+#define INO_EXT_TYPE_PURGEABLE_FLAGS 15
+#define INO_EXT_TYPE_ORIG_SYNC_ROOT_ID 16
+// Primero cuantos son y que tan largos en total
+struct xf_blob
+{
+    uint16_t xf_num_exts;
+    uint16_t xf_used_data;
+    uint8_t xf_data[]; // Esta en realidad es (x_field_t *)
+};
+typedef struct xf_blob xf_blob_t;
+
+// Cada uno de los campos
+struct x_field
+{
+    uint8_t x_type;
+    uint8_t x_flags;
+    uint16_t x_size;
+};
+typedef struct x_field x_field_t;
+
+// Este es uno de esos campos extendidos con tamaño del archivo
+struct j_dstream
+{
+    uint64_t size;
+    uint64_t alloced_size;
+    uint64_t default_crypto_id;
+    uint64_t total_bytes_written;
+    uint64_t total_bytes_read;
+} __attribute__((aligned(8), packed));
+typedef struct j_dstream j_dstream_t;
 
 struct j_inode_val
 {
@@ -531,5 +605,17 @@ struct j_file_extent_val
     uint64_t crypto_id;
 } __attribute__((packed));
 typedef struct j_file_extent_val j_file_extent_val_t;
+
+struct j_dstream_id_key
+{
+    j_key_t hdr;
+} __attribute__((packed));
+typedef struct j_dstream_id_key j_dstream_id_key_t;
+
+struct j_dstream_id_val
+{
+    uint32_t refcnt;
+} __attribute__((packed));
+typedef struct j_dstream_id_val j_dstream_id_val_t;
 
 #endif
